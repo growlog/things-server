@@ -23,10 +23,10 @@ var rootCmd = &cobra.Command{
         dbPassword := os.Getenv("GROWLOG_THING_DB_PASSWORD")
         dbName := os.Getenv("GROWLOG_THING_DB_NAME")
         thingAddress := os.Getenv("GROWLOG_THING_APP_ADDRESS")
-        iamAddress := os.Getenv("GROWLOG_THING_APP_IAM_ADDRESS")
+        remoteAccountAddress := os.Getenv("GROWLOG_THING_APP_IAM_ADDRESS")
 
         // Initialize our application.
-        app := internal.InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress, iamAddress)
+        app := internal.InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress, remoteAccountAddress)
 
         // DEVELOPERS CODE:
     	// The following code will create an anonymous goroutine which will have a

@@ -8,5 +8,5 @@ import (
 
 type ThingServer struct{
     DAL *models.DataAccessLayer
-	IAM *services.IAMClient
+	RemoteAccount *services.RemoteAccountClient
 }

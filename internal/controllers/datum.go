@@ -15,7 +15,7 @@ import (
 func (s *ThingServer) SetTimeSeriesData(ctx context.Context, in *pb.SetTimeSeriesDataRequest) (*pb.SetTimeSeriesDataResponse, error) {
 	// STEP 1: Verify token.
 	tokenString := ctx.Value("Token").(string)
-	claims := s.IAM.VerifyAccessToken(tokenString)
+	claims := s.RemoteAccount.VerifyAccessToken(tokenString)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid token - either expired or incorrect")
 	}

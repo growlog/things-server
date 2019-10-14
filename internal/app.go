@@ -1,4 +1,4 @@
-package internal // github.com/growlog/mikapod-iam/internal
+package internal // github.com/growlog/things-server/internal
 
 import (
 	"log"
@@ -16,12 +16,12 @@ import (
 type ThingsServer struct {
 	thingAddress string
 	dal *models.DataAccessLayer
-	iam *services.IAMClient
+	remoteAccount *services.RemoteAccountClient
 	grpcServer *grpc.Server
 }
 
-// Function will construct the Mikapod IAM application.
-func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress string, iamAddress string) (*ThingsServer) {
+// Function will construct the GrowLog remote account application.
+func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress string, remoteAccountAddress string) (*ThingsServer) {
 
 	// Initialize and connect our database layer for the entire application.
     dal := models.InitDataAccessLayer(dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -31,20 +31,20 @@ func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress s
 	dal.CreateSensorTable(false)
 	dal.CreateTimeSeriesDatumTable(false)
 
-    // Initialize our IAM client.
-	iam := services.InitIAMClient(iamAddress)
+    // Initialize our RemoteAccount client.
+	remoteAccount := services.InitRemoteAccountClient(remoteAccountAddress)
 
 	// Create our application instance.
  	return &ThingsServer{
 		thingAddress: thingAddress,
 		dal: dal,
-		iam: iam,
+		remoteAccount: remoteAccount,
 		grpcServer: nil,
 	}
 }
 
 // Function will consume the main runtime loop and run the business logic
-// of the Mikapod IAM application.
+// of the thing application.
 func (app *ThingsServer) RunMainRuntimeLoop() {
 	// Open a TCP server to the specified localhost and environment variable
     // specified port number.
@@ -67,7 +67,7 @@ func (app *ThingsServer) RunMainRuntimeLoop() {
         // DEVELOPERS NOTE:
         // We want to attach to every gRPC call the following variables...
         DAL: app.dal,
-		IAM: app.iam,
+		RemoteAccount: app.remoteAccount,
     })
     if err := grpcServer.Serve(lis); err != nil {
         log.Fatalf("failed to serve: %v", err)

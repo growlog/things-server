@@ -1,4 +1,4 @@
-package models // github.com/growlog/mikapod-iam/internal/models
+package models // github.com/growlog/things-server/internal/models
 
 import (
     "fmt"
