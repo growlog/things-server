@@ -13,7 +13,7 @@ import (
 	"github.com/growlog/things-server/internal/models"
 )
 
-type ThingsServer struct {
+type ThingApplication struct {
 	thingAddress string
 	dal *models.DataAccessLayer
 	remoteAccount *services.RemoteAccountClient
@@ -21,7 +21,7 @@ type ThingsServer struct {
 }
 
 // Function will construct the GrowLog remote account application.
-func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress string, remoteAccountAddress string) (*ThingsServer) {
+func InitThingApplication(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress string, remoteAccountAddress string) (*ThingApplication) {
 
 	// Initialize and connect our database layer for the entire application.
     dal := models.InitDataAccessLayer(dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -35,7 +35,7 @@ func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress s
 	remoteAccount := services.InitRemoteAccountClient(remoteAccountAddress)
 
 	// Create our application instance.
- 	return &ThingsServer{
+ 	return &ThingApplication{
 		thingAddress: thingAddress,
 		dal: dal,
 		remoteAccount: remoteAccount,
@@ -45,7 +45,7 @@ func InitThingsServer(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress s
 
 // Function will consume the main runtime loop and run the business logic
 // of the thing application.
-func (app *ThingsServer) RunMainRuntimeLoop() {
+func (app *ThingApplication) RunMainRuntimeLoop() {
 	// Open a TCP server to the specified localhost and environment variable
     // specified port number.
     lis, err := net.Listen("tcp", app.thingAddress)
@@ -76,7 +76,7 @@ func (app *ThingsServer) RunMainRuntimeLoop() {
 
 // Function will tell the application to stop the main runtime loop when
 // the process has been finished.
-func (app *ThingsServer) StopMainRuntimeLoop() {
+func (app *ThingApplication) StopMainRuntimeLoop() {
 	// Finish any RPC communication taking place at the moment before
     // shutting down the gRPC server.
     app.grpcServer.GracefulStop()
