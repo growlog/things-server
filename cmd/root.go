@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
         dbPassword := os.Getenv("GROWLOG_THING_DB_PASSWORD")
         dbName := os.Getenv("GROWLOG_THING_DB_NAME")
         thingAddress := os.Getenv("GROWLOG_THING_APP_ADDRESS")
-        remoteAccountAddress := os.Getenv("GROWLOG_THING_APP_IAM_ADDRESS")
+        remoteAccountAddress := os.Getenv("GROWLOG_THING_APP_REMOTE_ACCOUNT_ADDRESS")
 
         // Initialize our application.
         app := internal.InitThingApplication(dbHost, dbPort, dbUser, dbPassword, dbName, thingAddress, remoteAccountAddress)
